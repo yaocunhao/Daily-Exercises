@@ -1,4 +1,4 @@
-//输出链表倒数第K个节点的值
+//输出链表倒数第K个节点的
 
 struct ListNode* FindKthToTail(struct ListNode* pListHead, int k) {
 	struct ListNode*slow = pListHead;
