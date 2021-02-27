@@ -15,7 +15,7 @@ bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesC
 	else
 		k = lable_y / lable_x;
 
-	for (int i = 2; i<coordinatesSize; i++)
+	for (int i = 2; i < coordinatesSize; i++)
 	{
 		double flag_y = coordinates[i][1] - coordinates[i - 1][1];
 		double flag_x = coordinates[i][0] - coordinates[i - 1][0];
@@ -33,6 +33,5 @@ bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesC
 		}
 	}
 	return true;
-
 }
 
