@@ -3,23 +3,36 @@
 //请你来判断，这些点是否在该坐标系中属于同一条直线上，是则返回 true，否则请返回 false。
 
 
+//思路：利用斜率来解题，注意除数为零的情况
+
 bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesColSize){
-	if (coordinatesSize == 2)
-		return true;
+	int index = -1;
+	double k = 0;
+	double lable_y = coordinates[1][1] - coordinates[0][1];
+	double lable_x = coordinates[1][0] - coordinates[0][0];
+	if (lable_x == 0)
+		index = 0;
 	else
+		k = lable_y / lable_x;
+
+	for (int i = 2; i<coordinatesSize; i++)
 	{
-		int x = coordinates[1][0] - coordinates[0][0];
-		int y = coordinates[1][1] - coordinates[0][1];
-		int i;
-		for (i = 2; i<coordinatesSize; i++)
+		double flag_y = coordinates[i][1] - coordinates[i - 1][1];
+		double flag_x = coordinates[i][0] - coordinates[i - 1][0];
+		if (index == 0)
 		{
-			int y1 = coordinates[i][1] - coordinates[0][1];
-			int x1 = coordinates[i][0] - coordinates[0][0];
-			if (y*x1 != x*y1)
-				break;
+			if (flag_x != 0)
+				return false;
 		}
-		return i >= coordinatesSize;
+		else
+		{
+			if (flag_x == 0)
+				return false;
+			if (flag_y / flag_x != k)
+				return false;
+		}
 	}
+	return true;
 
 }
 
