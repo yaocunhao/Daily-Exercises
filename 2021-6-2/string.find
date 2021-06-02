@@ -1,0 +1,32 @@
+//从A串中找到相同的B串
+
+#include<iostream>
+using namespace std;
+#include <string>
+
+
+int main()
+{
+    string str1,str2;
+    
+    while(cin>>str1)
+    {
+        cin >>str2;
+        int count=0;
+        size_t pos=str1.find(str2);
+        while(pos!=string::npos)
+        {
+            count++;
+            
+            size_t pos2=pos+str2.size();
+            if(pos2>=str1.size())
+                break;
+            pos=str1.find(str2,pos2);
+        }
+        cout<<count<<endl;
+        
+    }
+    
+
+    return 0;
+}
