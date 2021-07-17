@@ -1,0 +1,44 @@
+class Solution {
+public:
+    /**
+     * min edit cost
+     * @param str1 string字符串 the string
+     * @param str2 string字符串 the string
+     * @param ic int整型 insert cost
+     * @param dc int整型 delete cost
+     * @param rc int整型 replace cost
+     * @return int整型
+     */
+    int minEditCost(string str1, string str2, int ic, int dc, int rc) {
+      vector<vector<long long>> dp(str1.size()+1,vector<long long >(str2.size()+1,0));
+      
+      for(int i=0;i<str1.size();i++)
+      {
+        dp[i+1][0]=dc*(i+1);
+      }
+      
+      for(int i=0;i<str2.size();i++)
+      {
+        dp[0][i+1]=ic*(i+1);
+      }
+      
+      for(int i=0;i<str1.size();i++)
+      {
+        for(int j=0;j<str2.size();j++)
+        {
+          if(str1[i]==str2[j])//想等
+            dp[i+1][j+1]=dp[i][j];
+          else//两个字符不相等
+          {
+            int insert=dp[i][j+1] + dc;//当前处插入一个字符
+            int delet=dp[i+1][j] +ic;//删除
+            int replace=dp[i][j] + rc;//替换
+            
+            dp[i+1][j+1] = fmin(insert,fmin(delet,replace));
+          }
+        }
+      }
+      
+      return dp[str1.size()][str2.size()];
+    }
+};
