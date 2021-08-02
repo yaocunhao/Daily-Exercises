@@ -1,49 +1,62 @@
 class Solution {
 public:
-    struct  Less
+    int BinarySearch(vector<int>&arr)
     {
-        bool operator ()(pair<int,int>&x1,pair<int,int>&x2)
+        int left=0;
+        int right=arr.size()-1;
+
+        while(left<=right)
         {
-            return x1.second<x2.second;
+            int mid=left+(right-left)/2;
+
+            if(arr[mid]==1)
+                left=mid+1;
+            else
+                right=mid-1;
+        }
+        return left;
+    }
+    struct Less
+    {
+        bool operator ()(pair<int,int>&x,pair<int,int>&y)
+        {
+            if(x.first < y.first)
+                return true;
+            else if(x.first == y.first && x.second < y.second)
+                return true;
+            
+            return false;
+
         }
     };
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
-        //先统计每一行的1的个数，然后进行排序，再选出个数最小的前K个
-        //两行相同，先出现的更弱 -> top K 问题 -> 建大堆
 
         priority_queue<pair<int,int>,vector<pair<int,int>>,Less> heap;
-        vector<int> flag;
-        for(int i=0;i<mat.size();i++)
+        int sub=0;
+        for(auto&e:mat)
         {
-            int count=0;
-            for(int j=0;j<mat[i].size();j++)
+            int count=BinarySearch(e);
+            
+            if(heap.size()<k)
+                heap.push(make_pair(count,sub++));
+            else if(heap.size()>=k && count < heap.top().first)
             {
-                if(mat[i][j]==1)
-                    count++;
-                else//此时为0，终止轮循环
-                {
-                    flag.push_back(count);
-                    auto val=make_pair(i,count);
-                    if(heap.size()==0||heap.size()<k)
-                        heap.push(val);
-                    else if(count<heap.top().second)
-                    {
-                        heap.pop();
-                        heap.push(val);
-                    }
-                    
-                    break;
-                }
+                heap.pop();
+                heap.push(make_pair(count,sub++));
             }
+            else
+                sub++;
         }
 
         vector<int> ret;
         while(!heap.empty())
         {
-            ret.push_back((heap.top()).first);
+            ret.push_back(heap.top().second);
             heap.pop();
         }
 
+        reverse(ret.begin(),ret.end());
         return ret;
+
     }
 };
